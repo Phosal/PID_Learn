@@ -1,5 +1,5 @@
 连续形式PID:
-&emsp;&emsp;&emsp; $out(t)=K_p*error(t)+K_i*\int^t_0error(t)dt+K_d*\frac{derror(t)}{dt}$
+&emsp;&emsp;&emsp; $out(t)=K_{p}*error(t)+K_{i}*\int^t_0error(t)dt+K_d*\frac{derror(t)}{dt}$
 离散形式位置式PID:
 &emsp;&emsp;&emsp; $out(k)=K_p*error(k)+K_i*\Sigma^k_{j=0}error(j)+K_d*(error(k)-error(k-1))$
 离散形式增量式PID:
@@ -41,8 +41,21 @@ else
 ## 变速积分
 **要解决的问题:**如果积分分离的阈值没有设定好，被控对象正好在阈值之外停下，则此时控制器会完全没有积分作用，误差不能消除
 **变速积分实现思路:**变速积分是积分分离的扩展，变速积分需要设计一个函数，这个函数值随误差绝对值增大而减小，函数值作为调整系数，用于调整误差积分的速度或积分项作用的强度。也就是说不再使用单一的积分分离，超过阈值归零，小于阈值开始误差积分积累，而是让它的积累强度是一个渐变的阶段。
+<img src="https://github.com/Phosal/PID_Learn/blob/master/%E6%96%87%E6%A1%A3%E6%89%80%E7%94%A8%E5%9B%BE%E7%89%87/%E5%8F%98%E9%80%9F%E7%A7%AF%E5%88%86%E7%9A%84%E7%B4%AF%E7%A7%AF%E5%BC%BA%E5%BA%A6%E7%B3%BB%E6%95%B0%E5%8F%82%E8%80%83.png">
+<img src="D:\Code\MarkdownNote\PID_Learn\文档所用图片\变速积分的累积强度系数参考.png">
 
+程序示例选用第三种函数
+
+```C
+float intDegree=1/((调控系数)*fabs(errorNow)+1);//fabs函数用于取绝对值，来自`math.h`
+errorInt+=intDegree*errorNow;
+```
+
+变速积分是积分分离的进阶版，两种优化同时只出现一种，根据实践选择优化方法，变速积分并不一定就比要么1要么0的积分分离效果好
 
 ### 微分部分改进
+## 微分先行
+
+## 不完全微分
 
 ### 输入输出部分改进
